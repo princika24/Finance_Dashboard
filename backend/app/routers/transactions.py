@@ -1,14 +1,11 @@
-from fastapi import (
-    APIRouter,
-    Depends
-)
+from fastapi import ( APIRouter, Depends)
 
 from sqlalchemy.orm import Session
 
 from app.database.connection import get_db
 
 from app.auth.dependencies import (
-    get_current_user
+    get_current_user_id
 )
 
 from app.models.user import User
@@ -33,7 +30,7 @@ def create_transaction(
     transaction: TransactionCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(
-        get_current_user
+        get_current_user_id
     )
 ):
     return add_transaction(
@@ -47,7 +44,7 @@ def create_transaction(
 def get_transactions(
     db: Session = Depends(get_db),
     current_user: User = Depends(
-        get_current_user
+        get_current_user_id
     )
 ):
     return list_transactions(

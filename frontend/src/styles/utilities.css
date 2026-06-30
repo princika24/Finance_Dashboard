@@ -1,0 +1,19 @@
+.bg-app {
+    background: var(--color-background);
+}
+
+.bg-surface {
+    background: var(--color-surface);
+}
+
+.text-app {
+    color: var(--color-text);
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.border-app {
+    border-color: var(--color-border);
+}
