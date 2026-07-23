@@ -1,60 +1,96 @@
 from datetime import date, datetime
-
 from sqlalchemy import (
+    Column,
+    Integer,
     String,
-    Float,
-    ForeignKey,
+    Numeric,
     Date,
-    DateTime
+    DateTime,
+    Boolean,
+    ForeignKey,
+    Enum,
+    func,
 )
-
 from sqlalchemy.orm import (
     Mapped,
     mapped_column,
     relationship
 )
-
 from app.database.base import Base
+from app.core.enums import (
+    TransactionType,
+    TransactionCategory,
+    PaymentMethod,
+)
 
 
 class Transaction(Base):
     __tablename__ = "transactions"
 
-    id: Mapped[int] = mapped_column(
-        primary_key=True,
-        index=True
+    id = Column(Integer, primary_key=True, index=True)
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
 
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id")
+    title = Column(
+        String(150),
+        nullable=False,
     )
 
-    amount: Mapped[float] = mapped_column(
-        Float
+    description = Column(
+        String(500),
+        nullable=True,
     )
 
-    category: Mapped[str] = mapped_column(
-        String(100)
+    amount = Column(
+        Numeric(12, 2),
+        nullable=False,
     )
 
-    description: Mapped[str] = mapped_column(
-        String(255)
+    type = Column(
+        Enum(TransactionType),
+        nullable=False,
+        index=True,
     )
 
-    transaction_type: Mapped[str] = mapped_column(
-        String(20)
+    category = Column(
+        Enum(TransactionCategory),
+        nullable=False,
+        index=True,
     )
 
-    transaction_date: Mapped[date] = mapped_column(
-        Date
+    payment_method = Column(
+        Enum(PaymentMethod),
+        nullable=False,
     )
 
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime,
-        default=datetime.utcnow
+    transaction_date = Column(
+        Date,
+        nullable=False,
+        index=True,
+    )
+
+    is_recurring = Column(
+        Boolean,
+        default=False,
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
     )
 
     user = relationship(
         "User",
-        back_populates="transactions"
+        back_populates="transactions",
     )

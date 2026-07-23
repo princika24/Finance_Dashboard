@@ -15,7 +15,6 @@ router = APIRouter(
 
 @router.get("/me", response_model=UserResponse,)
 def get_me(
-    user_id: int = Depends(get_current_user_id),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user_id),
     ):
-    return get_user_by_id(db, user_id)
+    return current_user

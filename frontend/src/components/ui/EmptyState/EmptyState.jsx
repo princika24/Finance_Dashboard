@@ -1,13 +1,9 @@
 import Button from "../Button/Button";
 
 export default function EmptyState({
-
     title,
-
     description,
-
     buttonText,
-
     onClick,
 
 }) {

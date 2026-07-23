@@ -43,4 +43,4 @@ def get_current_user_id(
             detail="User not found"
         )
 
-    return user.id
+    return user
